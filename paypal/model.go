@@ -264,13 +264,13 @@ type PaymentSource struct {
 }
 
 type Paypal struct {
-	EmailAddress      string             `json:"email_address"`
-	AccountID         string             `json:"account_id"`
-	AccountStatus     string             `json:"account_status"`
-	Name              *PayerName         `json:"name"`
-	Address           *PayerAddress      `json:"address"`
-	Attributes        *PaypalAttributes  `json:"attributes"`
-	ExperienceContext *ExperienceContext `json:"experience_context"`
+	EmailAddress      string             `json:"email_address,omitempty"`
+	AccountID         string             `json:"account_id,omitempty"`
+	AccountStatus     string             `json:"account_status,omitempty"`
+	Name              *PayerName         `json:"name,omitempty"`
+	Address           *PayerAddress      `json:"address,omitempty"`
+	Attributes        *PaypalAttributes  `json:"attributes,omitempty"`
+	ExperienceContext *ExperienceContext `json:"experience_context,omitempty"`
 }
 
 // https://developer.paypal.com/docs/api/orders/v2/#orders_create!path=payment_source/paypal/experience_context&t=request
