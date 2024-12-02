@@ -262,13 +262,27 @@ type PaymentSource struct {
 	Trustly    *Trustly    `json:"trustly,omitempty"`
 	Paypal     *Paypal     `json:"paypal,omitempty"`
 }
+
 type Paypal struct {
-	EmailAddress  string            `json:"email_address"`
-	AccountID     string            `json:"account_id"`
-	AccountStatus string            `json:"account_status"`
-	Name          *PayerName        `json:"name"`
-	Address       *PayerAddress     `json:"address"`
-	Attributes    *PaypalAttributes `json:"attributes"`
+	EmailAddress      string             `json:"email_address"`
+	AccountID         string             `json:"account_id"`
+	AccountStatus     string             `json:"account_status"`
+	Name              *PayerName         `json:"name"`
+	Address           *PayerAddress      `json:"address"`
+	Attributes        *PaypalAttributes  `json:"attributes"`
+	ExperienceContext *ExperienceContext `json:"experience_context"`
+}
+
+// https://developer.paypal.com/docs/api/orders/v2/#orders_create!path=payment_source/paypal/experience_context&t=request
+type ExperienceContext struct {
+	ShippingPreference      string `json:"shipping_preference,omitempty"`       // GET_FROM_FILE, NO_SHIPPING, SET_PROVIDED_ADDRESS
+	LandingPage             string `json:"landing_page,omitempty"`              // LOGIN, GUEST_CHECKOUT, NO_PREFERENCE
+	UserAction              string `json:"user_action,omitempty"`               // PAY_NOW, CONTINUE
+	PaymentMethodPreference string `json:"payment_method_preference,omitempty"` // UNRESTRICTED, IMMEDIATE_PAYMENT_REQUIRED
+	Locale                  string `json:"locale,omitempty"`
+	BrandName               string `json:"brand_name,omitempty"`
+	ReturnURL               string `json:"return_url,omitempty"`
+	CancelURL               string `json:"cancel_url,omitempty"`
 }
 
 type PayerName struct {
