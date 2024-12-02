@@ -1055,3 +1055,55 @@ type AddTrackingNumberRsp struct {
 	ErrorResponse *ErrorResponse `json:"-"`
 	Response      *OrderDetail   `json:"response,omitempty"`
 }
+
+type WebhookListRsp struct {
+	Code          int            `json:"-"`
+	Error         string         `json:"-"`
+	ErrorResponse *ErrorResponse `json:"-"`
+	Response      *WebhookList   `json:"response,omitempty"`
+}
+
+type WebhookGetRsp struct {
+	Code          int            `json:"-"`
+	Error         string         `json:"-"`
+	ErrorResponse *ErrorResponse `json:"-"`
+	Response      *Webhook       `json:"response,omitempty"`
+}
+
+type Webhook struct {
+	Id         string       `json:"id,omitempty"`
+	URL        string       `json:"url"`
+	EventTypes []*EventType `json:"event_types,omitempty"`
+	Links      []*Link      `json:"links,omitempty"`
+}
+
+type EventType struct {
+	Name        string `json:"name"`
+	Description string `json:"description,omitempty"`
+	Status      string `json:"status,omitempty"`
+}
+
+type WebhookList struct {
+	Webhooks []*Webhook `json:"webhooks,omitempty"`
+}
+
+type Event struct {
+	Id           string       `json:"id"`
+	CreateTime   string       `json:"create_time,omitempty"`
+	ResourceType ResourceType `json:"resource_type,omitempty"`
+	EventVersion string       `json:"event_version,omitempty"`
+	EventType    string       `json:"event_type,omitempty"`
+	Summary      string       `json:"summary,omitempty"`
+	Resource     interface{}  `json:"resource,omitempty"`
+	Status       string       `json:"status,omitempty"`
+	Links        []*Link      `json:"links,omitempty"`
+}
+
+type ResourceType string
+
+const (
+	EventResourceTypeInvoices ResourceType = "invoices"
+	EventResourceTypeSale     ResourceType = "sale"
+	EventResourceTypeRefund   ResourceType = "refund"
+	EventResourceTypeDispute  ResourceType = "dispute"
+)
