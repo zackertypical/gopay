@@ -117,6 +117,7 @@ func (c *Client) verifyWebhookSignature(event []byte, webhookId string, headers 
 	if err != nil {
 		return false, fmt.Errorf("failed to decode signature: %w", err)
 	}
+	// fmt.Printf("signatureBytes: %s\n", string(signatureBytes))
 
 	hash := sha256.Sum256([]byte(message))
 	err = rsa.VerifyPKCS1v15(webhookCertCache.PublicKey.(*rsa.PublicKey), crypto.SHA256, hash[:], signatureBytes)
@@ -167,22 +168,20 @@ func (c *Client) GetWebhookEvent(webhookId string, w http.ResponseWriter, r *htt
 	defer r.Body.Close()
 
 	headers := r.Header
-
+	isSignatureValid, err := c.verifyWebhookSignature(body, webhookId, headers)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return nil, fmt.Errorf("failed to verify signature: %w", err)
+	}
 	var data Event
 	if err := json.Unmarshal(body, &data); err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return nil, err
 	}
 
-	isSignatureValid, err := c.verifyWebhookSignature(body, webhookId, headers)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		return nil, fmt.Errorf("failed to verify signature: %w", err)
-	}
-
 	if !isSignatureValid {
 		w.WriteHeader(http.StatusForbidden)
-		return nil, fmt.Errorf("signature is not valid, headers: %v, data: %+v", r.Header, data)
+		return nil, fmt.Errorf("signature is not valid, \nheaders: %v, \nbody: %s", r.Header, string(body))
 	}
 
 	w.WriteHeader(http.StatusOK)
