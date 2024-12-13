@@ -184,7 +184,7 @@ func (c *Client) GetWebhookEvent(webhookId string, w http.ResponseWriter, r *htt
 
 	if !isSignatureValid {
 		w.WriteHeader(http.StatusForbidden)
-		return nil, fmt.Errorf("signature is not valid, data: %+v", data)
+		return nil, fmt.Errorf("signature is not valid, headers: %v, data: %+v", r.Header, data)
 	}
 
 	w.WriteHeader(http.StatusOK)
