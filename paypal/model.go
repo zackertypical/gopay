@@ -1108,7 +1108,7 @@ type Event struct {
 	EventVersion string       `json:"event_version,omitempty"`
 	EventType    string       `json:"event_type,omitempty"`
 	Summary      string       `json:"summary,omitempty"`
-	Resource     interface{}  `json:"resource,omitempty"`
+	Resource     []byte       `json:"resource,omitempty"`
 	Status       string       `json:"status,omitempty"`
 	Links        []*Link      `json:"links,omitempty"`
 }
