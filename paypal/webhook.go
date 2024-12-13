@@ -99,11 +99,9 @@ func (c *Client) verifyWebhookSignature(event []byte, webhookId string, headers 
 	webhookSignature := headers.Get("paypal-transmission-sig")
 	certURL := headers.Get("paypal-cert-url")
 
-	h := crc32.NewIEEE()
-	h.Write(event)
-	crc := h.Sum32()
+	crcDecimal := crc32.ChecksumIEEE(event)
 
-	message := fmt.Sprintf("%s|%s|%s|%d", transmissionID, timeStamp, webhookId, crc)
+	message := fmt.Sprintf("%s|%s|%s|%d", transmissionID, timeStamp, webhookId, crcDecimal)
 	fmt.Printf("Original signed message: %s\n", message)
 
 	var err error
