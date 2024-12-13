@@ -1,5 +1,7 @@
 package paypal
 
+import "encoding/json"
+
 type AccessToken struct {
 	Scope       string `json:"scope"`
 	AccessToken string `json:"access_token"`
@@ -1102,15 +1104,15 @@ type WebhookList struct {
 }
 
 type Event struct {
-	Id           string       `json:"id"`
-	CreateTime   string       `json:"create_time,omitempty"`
-	ResourceType ResourceType `json:"resource_type,omitempty"`
-	EventVersion string       `json:"event_version,omitempty"`
-	EventType    string       `json:"event_type,omitempty"`
-	Summary      string       `json:"summary,omitempty"`
-	Resource     []byte       `json:"resource,omitempty"`
-	Status       string       `json:"status,omitempty"`
-	Links        []*Link      `json:"links,omitempty"`
+	Id           string          `json:"id"`
+	CreateTime   string          `json:"create_time,omitempty"`
+	ResourceType ResourceType    `json:"resource_type,omitempty"`
+	EventVersion string          `json:"event_version,omitempty"`
+	EventType    string          `json:"event_type,omitempty"`
+	Summary      string          `json:"summary,omitempty"`
+	Resource     json.RawMessage `json:"resource,omitempty"`
+	Status       string          `json:"status,omitempty"`
+	Links        []*Link         `json:"links,omitempty"`
 }
 
 type ResourceType string
